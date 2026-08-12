@@ -1,0 +1,44 @@
+def median_of_medians(arr, k):
+    # If array has 5 or fewer elements
+    if len(arr) <= 5:
+        return sorted(arr)[k - 1]
+
+    # Divide array into groups of 5
+    groups = [arr[i:i + 5] for i in range(0, len(arr), 5)]
+
+    # Find median of each group
+    medians = []
+    for group in groups:
+        group.sort()
+        medians.append(group[len(group) // 2])
+
+    # Find median of medians
+    pivot = median_of_medians(medians, (len(medians) + 1) // 2)
+
+    # Partition the array
+    smaller = [x for x in arr if x < pivot]
+    equal = [x for x in arr if x == pivot]
+    larger = [x for x in arr if x > pivot]
+
+    # Find kth smallest
+    if k <= len(smaller):
+        return median_of_medians(smaller, k)
+
+    elif k <= len(smaller) + len(equal):
+        return pivot
+
+    else:
+        return median_of_medians(
+            larger,
+            k - len(smaller) - len(equal)
+        )
+
+
+# Example
+arr = [12, 3, 5, 7, 4, 19, 26, 1, 8, 15]
+k = 4
+
+answer = median_of_medians(arr, k)
+
+print("Array:", arr)
+print(k, "th smallest element is:", answer)
