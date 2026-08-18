@@ -1,0 +1,45 @@
+# Optimal Binary Search Tree using Dynamic Programming
+
+def optimal_bst(keys, freq):
+    n = len(keys)
+
+    # cost[i][j] = minimum cost of keys i to j
+    cost = [[0] * n for _ in range(n)]
+
+    # Sum of frequencies
+    def sum_freq(i, j):
+        return sum(freq[i:j + 1])
+
+    # Cost for single keys
+    for i in range(n):
+        cost[i][i] = freq[i]
+
+    # Consider chains of length 2 to n
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            cost[i][j] = float('inf')
+
+            total_freq = sum_freq(i, j)
+
+            # Try every key as root
+            for r in range(i, j + 1):
+
+                left = cost[i][r - 1] if r > i else 0
+                right = cost[r + 1][j] if r < j else 0
+
+                current_cost = left + right + total_freq
+
+                if current_cost < cost[i][j]:
+                    cost[i][j] = current_cost
+
+    return cost[0][n - 1]
+
+
+# Example
+keys = [10, 20, 30, 40]
+freq = [4, 2, 6, 3]
+
+result = optimal_bst(keys, freq)
+
+print("Minimum Cost of Optimal BST:", result)
