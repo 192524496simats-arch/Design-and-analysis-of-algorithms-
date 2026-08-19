@@ -1,0 +1,47 @@
+import heapq
+
+def huffman_coding(chars, freq):
+    heap = []
+
+    # Create a min-heap
+    for i in range(len(chars)):
+        heapq.heappush(heap, (freq[i], chars[i]))
+
+    # Build Huffman tree
+    while len(heap) > 1:
+        f1, left = heapq.heappop(heap)
+        f2, right = heapq.heappop(heap)
+
+        new_node = (left, right)
+        heapq.heappush(heap, (f1 + f2, new_node))
+
+    root = heap[0][1]
+
+    # Generate codes
+    codes = {}
+
+    def generate_codes(node, code=""):
+        if isinstance(node, str):
+            codes[node] = code
+            return
+
+        left, right = node
+        generate_codes(left, code + "0")
+        generate_codes(right, code + "1")
+
+    generate_codes(root)
+
+    return codes
+
+
+# Input
+n = int(input("Enter number of characters: "))
+
+chars = input("Enter characters: ").split()
+freq = list(map(int, input("Enter frequencies: ").split()))
+
+codes = huffman_coding(chars, freq)
+
+print("\nHuffman Codes:")
+for char in chars:
+    print(char, ":", codes[char])
