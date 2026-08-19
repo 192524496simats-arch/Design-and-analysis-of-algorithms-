@@ -1,0 +1,46 @@
+def optimal_bst(keys, freq):
+    n = len(keys)
+
+    # cost[i][j] = minimum cost for keys i to j
+    cost = [[0] * n for _ in range(n)]
+
+    # Prefix sum for frequencies
+    prefix = [0] * (n + 1)
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + freq[i]
+
+    # Cost of single keys
+    for i in range(n):
+        cost[i][i] = freq[i]
+
+    # Consider different lengths
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            cost[i][j] = float('inf')
+
+            total_freq = prefix[j + 1] - prefix[i]
+
+            # Try every key as root
+            for r in range(i, j + 1):
+                left = cost[i][r - 1] if r > i else 0
+                right = cost[r + 1][j] if r < j else 0
+
+                current = left + right + total_freq
+
+                if current < cost[i][j]:
+                    cost[i][j] = current
+
+    return cost[0][n - 1]
+
+
+# Input
+n = int(input("Enter number of keys: "))
+
+keys = list(map(int, input("Enter keys: ").split()))
+freq = list(map(int, input("Enter frequencies: ").split()))
+
+# Find minimum cost
+result = optimal_bst(keys, freq)
+
+print("Minimum cost of Optimal BST:", result)
