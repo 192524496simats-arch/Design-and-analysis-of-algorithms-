@@ -1,0 +1,10 @@
+import textwrap
+
+text = input("Enter the text: ")
+width = int(input("Enter the width: "))
+
+result = textwrap.wrap(text, width)
+
+print("Wrapped Text:")
+for line in result:
+    print(line)
