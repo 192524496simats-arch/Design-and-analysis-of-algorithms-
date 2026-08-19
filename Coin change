@@ -1,0 +1,24 @@
+def coin_change(coins, amount):
+    coins.sort(reverse=True)
+
+    result = []
+
+    for coin in coins:
+        while amount >= coin:
+            amount -= coin
+            result.append(coin)
+
+    return result
+
+
+# Input
+coins = list(map(int, input("Enter coin denominations: ").split()))
+amount = int(input("Enter amount: "))
+
+result = coin_change(coins, amount)
+
+if sum(result) == amount:
+    print("Coins used:", result)
+    print("Number of coins:", len(result))
+else:
+    print("Exact amount cannot be formed")
