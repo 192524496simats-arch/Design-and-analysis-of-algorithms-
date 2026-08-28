@@ -1,0 +1,29 @@
+def subset_sum(arr, target):
+    n = len(arr)
+
+    def solve(i, total, subset):
+        if total == target:
+            print("Subset:", subset)
+            return True
+
+        if i == n or total > target:
+            return False
+
+        # Include current element
+        if solve(i + 1, total + arr[i], subset + [arr[i]]):
+            return True
+
+        # Exclude current element
+        if solve(i + 1, total, subset):
+            return True
+
+        return False
+
+    if not solve(0, 0, []):
+        print("No subset found")
+
+
+arr = [3, 4, 5, 2]
+target = 9
+
+subset_sum(arr, target)
