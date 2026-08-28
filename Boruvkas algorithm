@@ -1,0 +1,56 @@
+def boruvka(edges, n):
+    parent = list(range(n))
+    components = n
+    cost = 0
+
+    def find(x):
+        while parent[x] != x:
+            x = parent[x]
+        return x
+
+    def union(a, b):
+        a = find(a)
+        b = find(b)
+
+        if a != b:
+            parent[b] = a
+            return True
+        return False
+
+    print("Edges in MST:")
+
+    while components > 1:
+        cheapest = [-1] * n
+
+        for i, (u, v, w) in enumerate(edges):
+            set1 = find(u)
+            set2 = find(v)
+
+            if set1 != set2:
+                if cheapest[set1] == -1 or edges[cheapest[set1]][2] > w:
+                    cheapest[set1] = i
+
+                if cheapest[set2] == -1 or edges[cheapest[set2]][2] > w:
+                    cheapest[set2] = i
+
+        for i in range(n):
+            if cheapest[i] != -1:
+                u, v, w = edges[cheapest[i]]
+
+                if union(u, v):
+                    print(u, "-", v, ":", w)
+                    cost += w
+                    components -= 1
+
+    print("Minimum Cost =", cost)
+
+
+edges = [
+    (0, 1, 2),
+    (0, 2, 3),
+    (1, 2, 1),
+    (1, 3, 4),
+    (2, 3, 5)
+]
+
+boruvka(edges, 4)
