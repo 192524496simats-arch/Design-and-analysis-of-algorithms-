@@ -1,0 +1,23 @@
+def bin_packing(items, capacity):
+    bins = []
+
+    for item in items:
+        placed = False
+
+        for i in range(len(bins)):
+            if bins[i] + item <= capacity:
+                bins[i] += item
+                placed = True
+                break
+
+        if not placed:
+            bins.append(item)
+
+    print("Number of bins required:", len(bins))
+    print("Bin usage:", bins)
+
+
+items = [4, 8, 1, 4, 2, 1]
+capacity = 10
+
+bin_packing(items, capacity)
