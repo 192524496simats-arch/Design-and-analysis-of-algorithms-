@@ -1,0 +1,26 @@
+def vertex_cover(edges):
+    cover = set()
+    edges = edges.copy()
+
+    while edges:
+        u, v = edges.pop(0)
+
+        cover.add(u)
+        cover.add(v)
+
+        edges = [
+            (a, b) for a, b in edges
+            if a not in cover and b not in cover
+        ]
+
+    return cover
+
+
+edges = [
+    (1, 2),
+    (1, 3),
+    (2, 4),
+    (3, 4)
+]
+
+print("Vertex Cover:", vertex_cover(edges))
