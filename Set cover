@@ -1,0 +1,31 @@
+def set_cover(universe, sets):
+    uncovered = set(universe)
+    selected = []
+
+    while uncovered:
+        best_set = max(
+            sets,
+            key=lambda s: len(set(s) & uncovered)
+        )
+
+        selected.append(best_set)
+        uncovered -= set(best_set)
+
+        sets.remove(best_set)
+
+    print("Selected sets:")
+    for s in selected:
+        print(s)
+
+
+universe = {1, 2, 3, 4, 5, 6}
+
+sets = [
+    {1, 2, 3},
+    {2, 4},
+    {3, 4, 5},
+    {4, 5, 6},
+    {1, 6}
+]
+
+set_cover(universe, sets.copy())
